@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/aroberge/reeborg#readme",
   "devDependencies": {
-    "faucet": "0.0.1",
-    "ink-docstrap": "^1.1.0",
-    "jsdoc": "^3.4.3",
+    "faucet": "^0.0.4",
+    "ink-docstrap": "^0.5.4",
+    "jsdoc": "^4.0.2",
     "madge": "^5.0.1",
     "mock-require": "^1.2.1",
     "silencer": "0.0.2",

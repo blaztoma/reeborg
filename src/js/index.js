@@ -39,9 +39,9 @@ require("./utils/path_utils.js");
 require("./world_api/decorative_objects.js");
 
 brython({debug:1, pythonpath:[RUR.BASE_URL + '/src/python']});
-if (__BRYTHON__.__MAGIC__ != "3.6.2") {
-    alert("Expecting Brython version 3.6.2 and got " + __BRYTHON__.__MAGIC__);
-}
+// if (__BRYTHON__.__MAGIC__ != "3.6.2") {
+//     alert("Expecting Brython version 3.6.2 and got " + __BRYTHON__.__MAGIC__);
+// }
 
 function probably_invalid(value) {
     return value === undefined || value === null || value == "null" || value == "undefined";
@@ -69,9 +69,13 @@ function start_session () {
 
 
 function confirm_ready_to_start() {
+    console.log(window.python_to_js);
+    console.log(window.translate_python);
+    console.log(window.python_to_js);
+    console.log(RUR.state.ui_ready);
     if (window.translate_python === undefined || !RUR.state.ui_ready) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
-        window.setTimeout(confirm_ready_to_start, 100);
+        // window.setTimeout(confirm_ready_to_start, 1000);
     } else {
         start_session();
     }
