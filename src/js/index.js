@@ -75,7 +75,7 @@ function confirm_ready_to_start() {
     console.log(RUR.state.ui_ready);
     if (window.translate_python === undefined || !RUR.state.ui_ready) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
-        // window.setTimeout(confirm_ready_to_start, 1000);
+        window.setTimeout(confirm_ready_to_start, 100);
     } else {
         start_session();
     }

@@ -118,8 +118,21 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
             message = response.message;
             other_info = response.other_info;
             error.name = response.error_name;
+            let translated_error;
+            translated_error = error.name;
+            // if (error.name === "ReeborgError")
+            translated_error = RUR.translate(message);
             error.message = "<h3>" + error.name + "</h3><p>" +
-                                    message + "</p><p>" + other_info + '</p>';
+                translated_error + "</p><p>" + other_info + '</p>';
+            if (RUR.state.prevent_playback) {
+                RUR.show_feedback("#Reeborg-concludes", e.reeborg_concludes);
+            } else {
+                RUR.record_frame("error", error);
+            }
+            if (error.name === "ReeborgOK") return false;
+            if (error.name === "ReeborgError") return false;
+            if (error.name === "MissingObjectError") return false;
+            if (error.name === "WallCollisionError") return false;
         } else {
             error.name = e.name;
             message = e.message;
@@ -135,7 +148,7 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
         } else {
             RUR.show_feedback("#Reeborg-shouts",
                                     "<h3>" + error.name + "</h3><p>" +
-                                    message + "</p><p>" + other_info + '</p>');
+                                    RUR.translate(message) + "</p><p>" + other_info + '</p>' + RUR.add_ai_button(error));
             return true;
         }
     }
@@ -143,6 +156,78 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
     return false;
 };
 
+RUR.add_ai_button = function(error) {
+    let button_string;
+    let call = "RUR.makeRequest('ree_explanations', '" + error.message + "');";
+    button_string = "<button id=\"explanation_button\" class=\"blue-gradient\" onclick=\"" + call + "\">DI paaiškinimas</button>";
+    button_string += "<div id=\"AI_hints\"></div>";
+    return button_string;
+}
+
+RUR.displayAIfailure = function(error) {
+    document.getElementById("AI_hints").classList.remove('invisible');
+    document.getElementById("AI_hints").classList.add('visible');
+    document.getElementById("AI_hints").innerHTML = "<pre style='white-space: pre-wrap;'>" + error.message + "</pre>";
+}
+
+RUR.displayAIresults = function(data) {
+    RUR.show_feedback("#Reeborg-shouts",
+        "<h3>Paaiškinimas (nebūtinai teisingas)</h3><p>" +
+        "<pre style='white-space: pre-wrap;'>" + data.choices[0].message.content + "</pre>");
+    // document.getElementById("AI_hints").innerHTML = "<pre style='white-space: pre-wrap;'>" + data.choices[0].message.content + "</pre>";
+}
+
+RUR.makeRequest = function(purpose, error) {
+
+    let baseUrl = 'https://arzinai.lt/scormAPI/';
+    let editor_code = editor.getValue();
+    let library_code = library.getValue();
+
+    var postData = {
+        "code" : incrs.encode(editor_code),
+        "library" : incrs.encode(library_code),
+        "error" : incrs.encode(error),
+        "language" : 'lt'
+    };
+
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData)
+    };
+
+    document.getElementById("AI_hints").innerHTML = '';
+    node = document.getElementById("loading_spinner");
+    clone = node.cloneNode(true);
+    document.getElementById("AI_hints").append(clone);
+
+    let apiUrl = baseUrl + purpose;
+
+    fetch(apiUrl, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            RUR.displayAIresults(data);
+        })
+        .catch(error => {
+            RUR.displayAIfailure(error);
+        });
+
+    if(purpose === "explanations") {
+        document.getElementById("explanation_button").style.display = "none";
+    }
+
+    // TODO : make corrections and purpose buttons
+    // if(purpose == "corrections") {
+    //     document.getElementById("correction_button").style.display = "none";
+    // }
+    // if(purpose == "reviews") {
+    //     document.getElementById("review_button").style.display = "none";
+    // }
+}
+
+var incrs={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(r){var e,t,o,a,h,d,C,c="",f=0;for(r=incrs._utf8_encode(r);f<r.length;)e=r.charCodeAt(f++),t=r.charCodeAt(f++),o=r.charCodeAt(f++),a=e>>2,h=(3&e)<<4|t>>4,d=(15&t)<<2|o>>6,C=63&o,isNaN(t)?d=C=64:isNaN(o)&&(C=64),c=c+this._keyStr.charAt(a)+this._keyStr.charAt(h)+this._keyStr.charAt(d)+this._keyStr.charAt(C);return c},decode:function(r){var e,t,o,a,h,d,C,c="",f=0;for(r=r.replace(/[^A-Za-z0-9\+\/\=]/g,"");f<r.length;)a=this._keyStr.indexOf(r.charAt(f++)),h=this._keyStr.indexOf(r.charAt(f++)),d=this._keyStr.indexOf(r.charAt(f++)),C=this._keyStr.indexOf(r.charAt(f++)),e=a<<2|h>>4,t=(15&h)<<4|d>>2,o=(3&d)<<6|C,c+=String.fromCharCode(e),64!=d&&(c+=String.fromCharCode(t)),64!=C&&(c+=String.fromCharCode(o));return incrs._utf8_decode(c)},_utf8_encode:function(r){r=r.replace(/\r\n/g,"\n");for(var e="",t=0;t<r.length;t++){var o=r.charCodeAt(t);o<128?e+=String.fromCharCode(o):o>127&&o<2048?(e+=String.fromCharCode(o>>6|192),e+=String.fromCharCode(63&o|128)):(e+=String.fromCharCode(o>>12|224),e+=String.fromCharCode(o>>6&63|128),e+=String.fromCharCode(63&o|128))}return e},_utf8_decode:function(r){for(var e="",t=0,o=c1=c2=0;t<r.length;)(o=r.charCodeAt(t))<128?(e+=String.fromCharCode(o),t++):o>191&&o<224?(e+=String.fromCharCode((31&o)<<6|63&(c2=r.charCodeAt(t+1))),t+=2):(e+=String.fromCharCode((15&o)<<12|(63&(c2=r.charCodeAt(t+1)))<<6|63&(c3=r.charCodeAt(t+2))),t+=3);return e}}
 
 RUR.runner.eval_javascript = function (src) {
     // do not "use strict"
