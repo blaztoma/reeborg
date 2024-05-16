@@ -39,8 +39,13 @@ require("./utils/path_utils.js");
 require("./world_api/decorative_objects.js");
 
 brython({debug:1, pythonpath:[RUR.BASE_URL + '/src/python']});
+
+// The best Brython version to use is 3.12.1
+// 3.12.2 and 3.12.3 versions has various bugs related to Reeborg
+// Commenting this out, so devs can have different versions for testing
+
 // if (__BRYTHON__.__MAGIC__ != "3.6.2") {
-//     alert("Expecting Brython version 3.6.2 and got " + __BRYTHON__.__MAGIC__);
+//     alert("Expecting at least Brython version 3.6.2 and got " + __BRYTHON__.__MAGIC__);
 // }
 
 function probably_invalid(value) {
@@ -69,10 +74,6 @@ function start_session () {
 
 
 function confirm_ready_to_start() {
-    console.log(window.python_to_js);
-    console.log(window.translate_python);
-    console.log(window.python_to_js);
-    console.log(RUR.state.ui_ready);
     if (window.translate_python === undefined || !RUR.state.ui_ready) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
         window.setTimeout(confirm_ready_to_start, 100);
@@ -82,7 +83,6 @@ function confirm_ready_to_start() {
 }
 
 confirm_ready_to_start();
-
 
 function set_initial_state() {
     /* This function sets the initial state which includes
