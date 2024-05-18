@@ -280,6 +280,7 @@ ui_lt["OBJECTS"] = "Objektai";
 
 ui_lt["Python Code"] = "Pitono kodas";
 ui_lt["Javascript Code"] = "Javascript kodas";
+ui_lt["Coffeescript Code"] = "Coffeescript kodas";
 ui_lt["LIBRARY"] = "biblioteka";
 ui_lt["EXTRA"] = "ekstra";
 ui_lt["PRE"] = "Prieš";
@@ -346,6 +347,7 @@ ui_lt["kbd-condition-btn"] = "Sąlygos";
 ui_lt["kbd-python-btn"] = "Pitonas";
 ui_lt["kbd-py-console-btn"] = "Pitonas";
 ui_lt["kbd-javascript-btn"] = "Javascript";
+ui_lt["kbd-coffee-btn"] = "CoffeeScript";
 ui_lt["kbd-objects-btn"] = "Objektai";
 ui_lt["kbd-special-btn"] = "Specialūs";
 

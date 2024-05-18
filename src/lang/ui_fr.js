@@ -276,6 +276,7 @@ ui_fr["OBJECTS"] = "Objets";
 
 ui_fr["Python Code"] = "Code Python";
 ui_fr["Javascript Code"] = "Code Javascript";
+ui_fr["Coffeescript Code"] = "Code CoffeeScript";
 ui_fr["LIBRARY"] = "biblio";
 ui_fr["EXTRA"] = "extra";
 ui_fr["PRE"] = "Pre";
@@ -342,6 +343,7 @@ ui_fr["kbd-condition-btn"] = "Conditions";
 ui_fr["kbd-python-btn"] = "Python";
 ui_fr["kbd-py-console-btn"] = "Python";
 ui_fr["kbd-javascript-btn"] = "Javascript";
+ui_fr["kbd-coffee-btn"] = "CoffeeScript";
 ui_fr["kbd-objects-btn"] = "Objets";
 ui_fr["kbd-special-btn"] = "Spécial";
 

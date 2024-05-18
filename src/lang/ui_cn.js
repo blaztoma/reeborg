@@ -271,6 +271,7 @@ ui_cn["OBJECTS"] = "物品";
 
 ui_cn["Python Code"] = "Python 代码";
 ui_cn["Javascript Code"] = "JavaScript 代码";
+ui_cn["Coffeescript Code"] = "CoffeeScript";
 ui_cn["LIBRARY"] = "库";
 ui_cn["EXTRA"] = "更多";
 ui_cn["PRE"] = "Pre";
@@ -337,6 +338,7 @@ ui_cn["kbd-condition-btn"] = "条件";
 ui_cn["kbd-python-btn"] = "Python";
 ui_cn["kbd-py-console-btn"] = "Python";
 ui_cn["kbd-javascript-btn"] = "JavaScript";
+ui_cn["kbd-coffee-btn"] = "CoffeeScript";
 ui_cn["kbd-objects-btn"] = "物品";
 ui_cn["kbd-special-btn"] = "特殊";
 

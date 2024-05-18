@@ -279,6 +279,7 @@ ui_ko["OBJECTS"] = "객체들";
 
 ui_ko["Python Code"] = "파이썬 코드";
 ui_ko["Javascript Code"] = "자바스크립트 코드";
+ui_ko["Coffeescript Code"] = "CoffeeScript Code";
 ui_ko["LIBRARY"] = "라이브러리";
 ui_ko["EXTRA"] = "extra";
 ui_ko["PRE"] = "전에";
@@ -345,6 +346,7 @@ ui_ko["kbd-condition-btn"] = "상태";
 ui_ko["kbd-python-btn"] = "파이썬";
 ui_ko["kbd-py-console-btn"] = "파이썬";
 ui_ko["kbd-javascript-btn"] = "자비스크립트";
+ui_ko["kbd-coffee-btn"] = "CoffeeScript";
 ui_ko["kbd-objects-btn"] = "객체";
 ui_ko["kbd-special-btn"] = "특수키";
 
