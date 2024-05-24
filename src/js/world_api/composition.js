@@ -41,7 +41,7 @@ function conditions_satisfied (conditions, x, y) {
         for (c=0; c < conditions.length; c++) {
             cond = conditions[c];
             fn = cond[0];
-            name = cond[1];
+            name = RUR.translate(cond[1]);
             if (cond[2] == "not") {
                 if (fn(name, x, y)) {
                     return false;

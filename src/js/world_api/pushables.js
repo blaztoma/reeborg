@@ -101,7 +101,8 @@ RUR.get_pushable = function (x, y, options) {
     if (tiles === null) {
         return null;
     } else {
-        return RUR.translate(tiles[0]);
+//        return RUR.translate(tiles[0]);
+        return tiles[0];
     }
 };
 
@@ -127,7 +128,7 @@ RUR.is_pushable = function (name, x, y, options) {
     if (RUR.KNOWN_THINGS.indexOf(RUR.translate_to_english(name)) == -1) {
         throw new RUR.ReeborgError(RUR.translate("Unknown object").supplant({obj: name}))
     }
-    return name == RUR.get_pushable(x, y, options);
+    return RUR.translate_to_english(name) == RUR.get_pushable(x, y, options);
 };
 
 
