@@ -176,10 +176,14 @@ function set_initial_input_method(url_query) {
     last_mode = localStorage.getItem("input_method");
 
     if (probably_invalid(RUR.state.input_method)) {
-        if (!probably_invalid(last_mode)) {
-            RUR.state.input_method = last_mode;
+        if (RUR.DEFAULT_PROGRAMMING_LANGUAGE !== undefined) {
+            RUR.state.input_method = RUR.DEFAULT_PROGRAMMING_LANGUAGE;
         } else {
-            RUR.state.input_method = RUR.initial_defaults.input_method;
+            if (!probably_invalid(last_mode)) {
+                RUR.state.input_method = last_mode;
+            } else {
+                RUR.state.input_method = RUR.initial_defaults.input_method;
+            }
         }
     }
     document.getElementById("programming-mode").value = RUR.state.input_method;
@@ -190,17 +194,20 @@ function set_initial_input_method(url_query) {
     }
 }
 
-
 function set_initial_language(url_query) {
     var last_lang;
     RUR.state.human_language = decodeURIComponent(url_query.queryKey.lang);
     last_lang = localStorage.getItem("human_language");
 
     if (probably_invalid(RUR.state.human_language)) {
-        if (!probably_invalid(last_lang)) {
-            RUR.state.human_language = last_lang;
+        if (RUR.DEFAULT_LANGUAGE !== undefined) {
+            RUR.state.human_language = RUR.DEFAULT_LANGUAGE;
         } else {
-            RUR.state.human_language = RUR.initial_defaults.human_language;
+            if (!probably_invalid(last_lang)) {
+                RUR.state.human_language = last_lang;
+            } else {
+                RUR.state.human_language = RUR.initial_defaults.human_language;
+            }
         }
     }
     document.getElementById('human-language').value = RUR.state.human_language;

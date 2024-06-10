@@ -150,7 +150,8 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
         } else {
             RUR.show_feedback("#Reeborg-shouts",
                                     "<h3>" + error.name + "</h3><p>" +
-                                    RUR.translate(message) + "</p><p>" + other_info + '</p>' + RUR.add_ai_button(error));
+                                    RUR.translate(message) + "</p><p>" + other_info + '</p>');
+                                    // RUR.translate(message) + "</p><p>" + other_info + '</p>' + RUR.add_ai_button(error));
             return true;
         }
     }

@@ -232,6 +232,7 @@ RUR.rec.check_goal = function (frame) {
                      RUR.translate("Last instruction completed!") +
                      "</p>";
         }
+        setAnswer("Last instruction completed!", "Last instruction completed!", true);
         return goal_status;
     }
 
@@ -240,24 +241,30 @@ RUR.rec.check_goal = function (frame) {
     if (g.position !== undefined){
         if (g.position.x === world.robots[0].x){
             goal_status.message += RUR.translate("<li class='success'>Reeborg is at the correct x position.</li>");
+            setAnswer(RUR.translate("Reeborg is at the correct x position."), RUR.translate("Reeborg is at the correct x position."), true);
         } else {
             goal_status.message += RUR.translate("<li class='failure'>Reeborg is at the wrong x position.</li>");
             goal_status.success = false;
+            setAnswer(RUR.translate("Reeborg is at the correct x position."), RUR.translate("Reeborg is at the wrong x position."), false);
         }
         if (g.position.y === world.robots[0].y){
             goal_status.message += RUR.translate("<li class='success'>Reeborg is at the correct y position.</li>");
+            setAnswer(RUR.translate("Reeborg is at the correct y position."), RUR.translate("Reeborg is at the correct y position."), true);
         } else {
             goal_status.message += RUR.translate("<li class='failure'>Reeborg is at the wrong y position.</li>");
             goal_status.success = false;
+            setAnswer(RUR.translate("Reeborg is at the correct y position."), RUR.translate("Reeborg is at the wrong y position."), false);
         }
     }
     if (g.pushables !== undefined) {
         result = identical(g.pushables, world.pushables, true);
         if (result){
             goal_status.message += RUR.translate("<li class='success'>All objects are at the correct location.</li>");
+            setAnswer(RUR.translate("All objects are at the correct location."), RUR.translate("All objects are at the correct location."), true);
         } else {
             goal_status.message += RUR.translate("<li class='failure'>One or more objects are not at the correct location.</li>");
             goal_status.success = false;
+            setAnswer(RUR.translate("All objects are at the correct location."), RUR.translate("One or more objects are not at the correct location."), false);
         }
     }
 
@@ -265,9 +272,11 @@ RUR.rec.check_goal = function (frame) {
         result = identical(g.objects, world.objects, true);
         if (result){
             goal_status.message += RUR.translate("<li class='success'>All objects are at the correct location.</li>");
+            setAnswer(RUR.translate("All objects are at the correct location."), RUR.translate("All objects are at the correct location."), true);
         } else {
             goal_status.message += RUR.translate("<li class='failure'>One or more objects are not at the correct location.</li>");
             goal_status.success = false;
+            setAnswer(RUR.translate("All objects are at the correct location."), RUR.translate("One or more objects are not at the correct location."), false);
         }
     }
     if (g.walls !== undefined) {
@@ -285,9 +294,11 @@ RUR.rec.check_goal = function (frame) {
         }
         if (result){
             goal_status.message += RUR.translate("<li class='success'>All walls have been built correctly.</li>");
+            setAnswer(RUR.translate("All walls have been built correctly."), RUR.translate("All walls have been built correctly."), true);
         } else {
             goal_status.message += RUR.translate("<li class='failure'>One or more walls missing or built at wrong location.</li>");
             goal_status.success = false;
+            setAnswer(RUR.translate("All walls have been built correctly."), RUR.translate("One or more walls missing or built at wrong location."), false);
         }
     }
     goal_status.message += "</ul>";
@@ -298,7 +309,10 @@ RUR.rec.check_goal = function (frame) {
             goal_status.message = "<p class='center'>" +
                      RUR.translate("Last instruction completed!") +
                      "</p>";
-        }       
+            setAnswer("Last instruction completed!", "Last instruction completed!", true);
+        }
     }
+
+    setScore();
     return goal_status;
 };

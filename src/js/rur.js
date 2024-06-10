@@ -568,6 +568,9 @@ RUR.show_feedback = function (element, content) {
     $(element).html(content).dialog("open");
 };
 
+RUR.show_hints = function (element) {
+    $(element).dialog("open");
+};
 
 /** @function randint
  * @memberof RUR
@@ -584,6 +587,7 @@ RUR.randint = function (min, max) {
 
 RUR.hide_end_dialogs = function () {
     $("#Reeborg-concludes").dialog("close");
+    $("#Reeborg-hints").dialog("close");
     $("#Reeborg-shouts").dialog("close");
     // reset the options in case the user has dragged the dialogs as it would
     // then open at the top left of the window
