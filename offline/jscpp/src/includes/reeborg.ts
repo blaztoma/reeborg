@@ -24,9 +24,9 @@ export = {
         })();
 
         const registerFunction = function(methodName: string, callback: (...args: any) => any) {
-            rt.regFunc(function(rt: CRuntime, _this: any, ...args: Variable[]) {                
-                callback(...argumentTranslation(args));
-            }, "global", methodName, ["?"], rt.voidTypeLiteral);
+            rt.regFunc(function(rt: CRuntime, _this: any, ...args: Variable[]) {     
+                return rt.val(rt.boolTypeLiteral, (callback(...argumentTranslation(args)) ?? 1) > 0);
+            }, "global", methodName, ["?"], rt.boolTypeLiteral);
         };
 
         for(let methodName in reeborg) {
