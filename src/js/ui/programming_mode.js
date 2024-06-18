@@ -111,6 +111,17 @@ RUR.listeners['programming-mode'] = function () {
     hide_everything();
 
     switch(choice) {
+        case "cpp":
+            RUR.state.programming_language = "cpp";
+            $("#editor-tab").html(RUR.translate("C++ Code"));
+            show_editor("cpp");
+            editor.setOption("readOnly", false);
+            editor.setOption("theme", "reeborg-dark");
+            try {
+                $("#kbd-undo").show();
+                $("#kbd-redo").show();
+            } catch(e) {}
+            break;
         case "python":
             RUR.state.programming_language = "python";
             $("#editor-tab").html(RUR.translate("Python Code"));

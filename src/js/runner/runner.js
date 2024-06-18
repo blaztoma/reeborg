@@ -94,6 +94,8 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
             if (RUR.__python_error) {
                 throw RUR.__python_error;
             }
+        } else if (RUR.state.programming_language === "cpp") {
+            RUR.runner.eval_cpp(src);
         } else {
             alert("FATAL ERROR: Unrecognized programming language.");
             return true;
@@ -273,6 +275,50 @@ RUR.runner.eval_python = function (src) {
     pre_code = pre_code_editor.getValue();
     post_code = "\n" + post_code_editor.getValue();
     translate_python(src, RUR.state.highlight, RUR.state.watch_vars, pre_code, post_code);
+};
+
+RUR.runner.eval_cpp = function (src) {    
+    // do not "use strict"
+    var pre_code, post_code;
+    pre_code = pre_code_editor.getValue();
+    post_code = post_code_editor.getValue();
+    const definitions = RUR.reset_definitions();
+    src = pre_code + "\n" + src + "\n" + post_code;
+
+    // stopExecutionFlag = false;
+
+    const config = {
+        reeborg: definitions,
+        stdio: {
+            finishCallback: function(exitCode) {
+                console.log(`JSCPP: program exited with code " + ${exitCode};`);
+            },
+            promiseError: function(promise_error) {
+                RUR.show_feedback("#Reeborg-shouts", promise_error);
+            },
+            write: function(s) {
+                console.log(`JSCPP: ${s}`);
+            }
+        },
+        // stopExecutionCheck: function() {
+        //     return stopExecutionFlag;
+        // },
+        //maxExecutionSteps: (100 * 100) * 10, // (lines of code * loop iterations) * 10 times buffer
+        maxTimeout: 3 * 60 * 1000, // 3 mins
+        eventLoopSteps: 10_000,
+        unsigned_overflow: "error"
+    };
+    
+    try {
+        // stopExecutionFlag = false;
+        JSCPP.run(src, () => Promise.resolve(), config);
+    } catch (error) {
+        errorOccured = true;
+        if (RUR.state.done_executed){
+            JSCPP.run(post_code, () => Promise.resolve(), config);
+        }
+        throw e; // throw original message from Done if nothing else is raised
+    }
 };
 
 RUR.runner.simplify_python_traceback = function(e) {
