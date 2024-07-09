@@ -181,6 +181,20 @@ function run(code: string, input: InputFunction, config: JSCPPConfig): Debugger 
 
     const mydebugger = new Debugger(code, oldCode);
 
+    const unwrapUnicode = function() {
+        const hex = function(ch: string) {
+            return ch.charCodeAt(0).toString(16).toUpperCase();
+        };
+
+        return function(txt: string) {
+            return txt
+                .replace(/[\u0100-\u0FFF]/g, function(ch) { return "\\u0" + hex(ch); })
+                .replace(/[\u1000-\uFFFF]/g, function(ch) { return "\\u"  + hex(ch); });
+        };
+    }();
+    
+    code = unwrapUnicode(code);
+    
     const result = PEGUtil.parse(ast, code);
     if (result.error != null) {
         throw new Error("ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true));
