@@ -289,6 +289,7 @@ RUR.runner.eval_cpp = function (src) {
 
     const config = {
         reeborg: definitions,
+        debug: false,
         stdio: {
             finishCallback: function(exitCode) {
                 console.log(`JSCPP: program exited with code " + ${exitCode};`);
@@ -318,7 +319,7 @@ RUR.runner.eval_cpp = function (src) {
         if (RUR.state.done_executed){
             JSCPP.run(post_code, () => Promise.resolve(), config);
         }
-        throw e; // throw original message from Done if nothing else is raised
+        throw error; // throw original message from Done if nothing else is raised
     }
 };
 
