@@ -143,36 +143,6 @@ function run(code: string, input: InputFunction, config: JSCPPConfig): Debugger 
         performStep();
     }
 
-    let performedSteps = 0;
-    async function performStep() {
-        try {
-            while (proceed) {
-                if (_config.stopExecutionCheck?.())
-                    throw new Error("Execution terminated.");
-                
-                step = mainGen.next();
-                performedSteps++;
-    
-                if (step.done) { 
-                    const exitCode = step.value.v as number
-                    _config.stdio.finishCallback(exitCode);
-                    return exitCode; 
-                }
-    
-                if (performedSteps > _config.maxExecutionSteps)
-                    throw new Error("The execution step limit has been reached.");
-                else if (_config.maxTimeout && ((Date.now() - startTime) > _config.maxTimeout))
-                    throw new Error("Time limit exceeded.");
-    
-                if ((performedSteps % _config.eventLoopSteps) === 0) {
-                    await new Promise((resolve) => setImmediate(resolve));
-                }
-            }
-        } catch (error) {
-            _config.stdio.promiseError(error.message);
-        }
-    }    
-
     mergeConfig(_config, config);
     const rt = new CRuntime(_config);
     code = code.toString();
@@ -195,6 +165,38 @@ function run(code: string, input: InputFunction, config: JSCPPConfig): Debugger 
     
     code = unwrapUnicode(code);
     
+    let performedSteps = 0;
+    async function performStep() {
+        try {
+            while (proceed) {
+                if (_config.stopExecutionCheck?.())
+                    throw new Error("Execution terminated.");
+                
+                step = mainGen.next();
+                performedSteps++;
+    
+                if (step.done) { 
+                    const exitCode = step.value.v as number
+                    _config.stdio.finishCallback(exitCode);
+                    return exitCode; 
+                } else {
+                    _config.set_lineno_highlight(rt.interp.currentNode.eLine);
+                }
+    
+                if (performedSteps > _config.maxExecutionSteps)
+                    throw new Error("The execution step limit has been reached.");
+                else if (_config.maxTimeout && ((Date.now() - startTime) > _config.maxTimeout))
+                    throw new Error("Time limit exceeded.");
+    
+                if ((performedSteps % _config.eventLoopSteps) === 0) {
+                    await new Promise((resolve) => setImmediate(resolve));
+                }
+            }
+        } catch (error) {
+            _config.stdio.promiseError(error.message);
+        }
+    }  
+
     const result = PEGUtil.parse(ast, code);
     if (result.error != null) {
         throw new Error("ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true));

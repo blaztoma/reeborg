@@ -32,7 +32,7 @@ RUR.runner.run = function (playback) {
         RUR.set_current_world(RUR.clone_world(RUR.WORLD_AFTER_ONLOAD));
         RUR.world_init();
 
-        if (!(RUR.state.programming_language === "python" && RUR.state.highlight) ) {
+        if (!(({"python": true})[RUR.state.programming_language] && RUR.state.highlight) ) {
             RUR.record_frame();  // record the starting state as first frame;
             // for python with highlighting on, the first frame will be the first
             // instruction to be executed highlighted.
@@ -301,6 +301,9 @@ RUR.runner.eval_cpp = function (src) {
                 console.log(`JSCPP: ${s}`);
                 RUR.write(s);
             }
+        },
+        set_lineno_highlight: function(lineno) {
+            RUR.set_lineno_highlight([lineno - 1]);
         },
         // stopExecutionCheck: function() {
         //     return stopExecutionFlag;

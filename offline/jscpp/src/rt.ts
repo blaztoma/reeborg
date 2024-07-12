@@ -27,6 +27,7 @@ export interface JSCPPConfig {
     includes?: { [fileName: string]: IncludeModule };
     loadedLibraries?: string[];
     reeborg?: any,
+    set_lineno_highlight?: any;
     fstream?: {
         open: (context: object, fileName: string) => object
     };
