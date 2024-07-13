@@ -251,7 +251,7 @@ RUR.reset_pre_run_defaults = function () {
                           // or set_max_nb_steps() in English
 
     /* time frames */
-    RUR.PLAYBACK_TIME_PER_FRAME = 300; // ajustable by a program via think()
+    RUR.PLAYBACK_TIME_PER_FRAME = 100; // ajustable by a program via think()
     RUR.MIN_TIME_SOUND = 250; // if RUR.PLAYBACK_TIME_PER_FRAME is below
                               // this value, no sound will be heard
     RUR.reset_animated_images(); // see above; will reset RUR.ANIMATION_TIME and
