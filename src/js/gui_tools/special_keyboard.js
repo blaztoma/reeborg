@@ -376,6 +376,7 @@ function init() {
     add_onclick_insert_untranslated_statement("kbd-js-continue", "continue");
     add_onclick_insert_untranslated_statement("kbd-js-break", "break");
 
+    add_onclick_insert_untranslated("kbd-cpp-boiler", "#include &lt;reeborg&gt;\n\nint main() {\n\n    return 0;\n}");
     add_onclick_insert_untranslated("kbd-cpp-include", "#include &lt;?&gt;");
     add_onclick_insert_untranslated("kbd-cpp-include-reeborg", "#include &lt;reeborg&gt;");
     add_onclick_insert_untranslated("kbd-cpp-include-iostream", "#include &lt;iostream&gt;");
@@ -395,10 +396,10 @@ function init() {
     add_onclick_insert_untranslated("kbd-cpp-not", "!");
     add_onclick_insert_untranslated("kbd-cpp-and", "&&");
     add_onclick_insert_untranslated("kbd-cpp-or", "||");
-    add_onclick_insert_function_statement("kbd-cpp-write", "cout << ?;");
-    add_onclick_insert_untranslated_statement("kbd-cpp-return", "return ?;");
-    add_onclick_insert_untranslated_statement("kbd-cpp-continue", "continue");
-    add_onclick_insert_untranslated_statement("kbd-cpp-break", "break");
+    add_onclick_insert_untranslated("kbd-cpp-write", "cout << ?;");
+    add_onclick_insert_untranslated("kbd-cpp-return", "return ?;");
+    add_onclick_insert_untranslated("kbd-cpp-continue", "continue;");
+    add_onclick_insert_untranslated("kbd-cpp-break", "break;");
 
     add_onclick_insert_untranslated("kbd-coffee-function", "? = ( ) ->");
     add_onclick_insert_untranslated("kbd-coffee-if", "if ?");
