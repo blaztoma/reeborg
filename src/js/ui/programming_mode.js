@@ -278,11 +278,14 @@ function show_editor(lang) {
     }
 }
 
-function show_javascript_editor () {
+function show_javascript_editor() {
     editor.setOption("mode", "javascript");
     onload_editor.setOption("mode", "javascript"); // could be changed in import_world
     pre_code_editor.setOption("mode", "javascript");
     post_code_editor.setOption("mode", "javascript");
+
+    RUR.state.highlight = RUR.state.highlight || RUR.state._saved_highlight_value;
+    $("#highlight").show();
 }
 
 function show_cpp_editor() {

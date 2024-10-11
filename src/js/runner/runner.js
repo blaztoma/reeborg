@@ -32,7 +32,7 @@ RUR.runner.run = function (playback) {
         RUR.set_current_world(RUR.clone_world(RUR.WORLD_AFTER_ONLOAD));
         RUR.world_init();
 
-        if (!(({"python": true})[RUR.state.programming_language] && RUR.state.highlight) ) {
+        if (!(({"python": true, "javascript": true, "cpp": true})[RUR.state.programming_language] && RUR.state.highlight) ) {
             RUR.record_frame();  // record the starting state as first frame;
             // for python with highlighting on, the first frame will be the first
             // instruction to be executed highlighted.
@@ -239,13 +239,102 @@ RUR.runner.eval_javascript = function (src) {
     var pre_code, post_code;
     pre_code = pre_code_editor.getValue();
     post_code = post_code_editor.getValue();
-    RUR.reset_definitions();
+    const definitions = RUR.reset_definitions();
     src = pre_code + "\n" + src + "\n" + post_code;
+
+    const JSInterpreter = (function() {
+        let interp = null;
+
+        const InjectedAPI = function(interp, globalObject) {
+            for(let methodName in definitions) {
+                interp.setProperty(globalObject, methodName, interp.createNativeFunction(definitions[methodName]));
+            }
+        };
+
+        const isLine = (function() {
+            let oldStack = [];
+
+            return function(stack) {
+                const state = stack[stack.length - 1];
+                const node = state.node;
+                const type = node.type;
+          
+                if (type !== 'VariableDeclaration' && type.substr(-9) !== 'Statement') {
+                  return false;
+                }
+          
+                if (type === 'BlockStatement') {
+                  return false;
+                }
+          
+                if (type === 'VariableDeclaration' && stack[stack.length - 2].node.type === 'ForStatement') {
+                  return false;
+                }
+          
+                if (oldStack[oldStack.length - 1] === state) {
+                  return false;
+                }
+          
+                if (oldStack.indexOf(state) !== -1 && type !== 'ForStatement' && type !== 'WhileStatement' && type !== 'DoWhileStatement') {
+                  return false;
+                }
+          
+                oldStack = stack.slice();
+                return true;
+            };
+        })();
+        
+        return {
+            eval: function(src) {
+                interp = new Interpreter(src, InjectedAPI);
+                return this;
+            },
+            step: function() {
+                let OK = false;
+
+                const stack = interp.getStateStack();
+                const lineno = stack[stack.length - 1].node.aa.start.line - 3;
+
+                let stepAgain = !isLine(stack);
+                try {
+                    OK = interp.step();
+                } finally {
+                    if (!OK) {
+                        stepAgain = false;
+                    }
+                }
+
+                if (stepAgain)
+                    return this.step();
+
+                if (OK) {
+                    RUR.set_lineno_highlight([lineno]);
+                }                
+
+                return OK;
+            },
+            highlightRun: function() {
+                const nextStep = () => {
+                    if (this.step()) {
+                        window.setTimeout(nextStep, 0);
+                    }
+                };
+
+                nextStep();
+            },
+            run: function() {
+                interp.run();
+            }
+        };
+    })();
+
     try {
-        eval(src); // jshint ignore:line
+        const interp = JSInterpreter.eval(src);
+        interp[RUR.state.highlight ? "highlightRun" : "run"]()
     } catch (e) {
-        if (RUR.state.done_executed){
-            eval(post_code); // jshint ignore:line
+        if (RUR.state.done_executed) {
+            const interp = JSInterpreter.eval(post_code);
+            interp[RUR.state.highlight ? "highlightRun" : "run"]()
         }
         throw e;// throw original message from Done if nothing else is raised
     } 

@@ -38,6 +38,8 @@ RUR.listeners['editor-tab'] = function (evt) {
         $("#watch-variables-btn").show();
     } else if (RUR.state.programming_language == "cpp" && !RUR.state.editing_world) {
         $("#highlight").show();
+    } else if (RUR.state.programming_language == "javascript" && !RUR.state.editing_world) {
+        $("#highlight").show();
     } else {
         $("#highlight").hide();
         $("#watch-variables-btn").hide();
