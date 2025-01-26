@@ -20,6 +20,7 @@ function set_ui_ready_to_run () {
 
     $("#open-solution-btn").removeAttr("disabled");
     $("#save-solution-btn").removeAttr("disabled");
+    $("#new-solution-btn").removeAttr("disabled");
 
     $("#frame-selector").hide();
     $("#frame-id").hide();

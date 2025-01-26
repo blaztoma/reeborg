@@ -33,6 +33,7 @@ function run() {
 
     $("#open-solution-btn").attr("disabled", "true");
     $("#save-solution-btn").attr("disabled", "true");
+    $("#new-solution-btn").attr("disabled", "true");
 
     clearTimeout(RUR._TIMER);
     RUR.runner.run(RUR.play);

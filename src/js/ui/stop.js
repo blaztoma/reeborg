@@ -1,8 +1,5 @@
 
 require("./../rur.js");
-var record_id = require("./../../lang/msg.js").record_id;
-
-record_id("stop");
 
 RUR.stop = function () {
     clearTimeout(RUR._TIMER);

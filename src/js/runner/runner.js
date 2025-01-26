@@ -1,4 +1,3 @@
-
 require("./../rur.js");
 require("./../translator.js");
 require("./../drawing/visible_world.js");
@@ -372,7 +371,7 @@ RUR.runner.eval_cpp = function (src) {
     pre_code = pre_code_editor.getValue();
     post_code = post_code_editor.getValue();
     const definitions = RUR.reset_definitions();
-    src = pre_code + "\n" + src + "\n" + post_code;
+    eval(pre_code);
 
     // stopExecutionFlag = false;
 
@@ -382,13 +381,14 @@ RUR.runner.eval_cpp = function (src) {
         stdio: {
             finishCallback: function(exitCode) {
                 console.log(`JSCPP: program exited with code " + ${exitCode};`);
+                eval(post_code);
             },
             promiseError: function(promise_error) {
                 RUR.show_feedback("#Reeborg-shouts", promise_error);
             },
             write: function(s) {
                 console.log(`JSCPP: ${s}`);
-                RUR.write(s);
+                RUR._write_(s);
             }
         },
         set_lineno_highlight: function(lineno) {

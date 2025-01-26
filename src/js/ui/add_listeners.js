@@ -69,6 +69,10 @@ $(document).ready(function () {
         RUR.listeners['programming-mode']();
     });
 
+    // in new.js TODO: make new file here later
+    // var reload_button = document.getElementById("new-solution-btn");
+    // reload_button.addEventListener("click", RUR.new_solution, false);
+
     // in reload.js
     var reload_button = document.getElementById("reload");
     reload_button.addEventListener("click", RUR.reload, false);

@@ -161,6 +161,11 @@ RUR.rec.conclude = function () {
                              "<p class='center'>" +
                              RUR.translate("Last instruction completed!") +
                              "</p>");
+            if (typeof setAnswer === "function") {
+                setAnswer("Last instruction completed!", "Last instruction completed!", true);
+                setScore();
+                resetScore();
+            }
         }
     }
     RUR.stop();
@@ -184,6 +189,11 @@ RUR.rec.handle_error = function (frame) {
                              "<p class='center'>" +
                              frame.error.message +
                              "</p>");
+        if (typeof setAnswer === "function") {
+            setAnswer("Last instruction completed!", "Last instruction completed!", true);
+            setScore();
+            resetScore();
+        }
     } else {
         if (RUR.state.sound_on) {
             RUR._play_sound("#error-sound");
@@ -207,6 +217,11 @@ RUR.rec.check_current_world_status = function() {
                              "<p class='center'>" +
                              RUR.translate("Last instruction completed!") +
                              "</p>");
+            if (typeof setAnswer === "function") {
+                setAnswer("Last instruction completed!", "Last instruction completed!", true);
+                setScore();
+                resetScore();
+            }
         }
     } else {
         goal_status = RUR.rec.check_goal(frame);
@@ -339,6 +354,7 @@ RUR.rec.check_goal = function (frame) {
 
     if (typeof setScore === "function") {
         setScore();
+        resetScore();
     }
     return goal_status;
 };

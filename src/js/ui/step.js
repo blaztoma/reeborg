@@ -33,6 +33,7 @@ function step() {
 
     $("#open-solution-btn").attr("disabled", "true");
     $("#save-solution-btn").attr("disabled", "true");
+    $("#new-solution-btn").attr("disabled", "true");
 }
 
 RUR.listeners.reverse_step = function () {

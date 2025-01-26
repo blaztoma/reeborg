@@ -9,6 +9,10 @@ require("./user_progress.js");
 var remove_fileInput_listener = require("../listeners/onclick.js").remove_fileInput_listener;
 
 
+function newSolution() {
+    editor.setValue("");
+}
+
 function saveSolution() {
     /* Saves the solution (code in the editor and, if using Python,
     code in the library) for a given world in a single file.
@@ -48,6 +52,16 @@ function saveSolution() {
             extension = ".js";
             content = editor.getValue();
             break;
+        case "coffeescript":
+            filetype = "text/coffeescript;charset=utf-8";
+            extension = ".coffee";
+            content = editor.getValue();
+            break;
+        case "cpp":
+            filetype = "text/cpp;charset=utf-8";
+            extension = ".cpp";
+            content = editor.getValue();
+            break;
         case "py-repl":
             alert(RUR.translate("No solution can be saved when using REPL (Py)."));
             return;
@@ -73,6 +87,8 @@ function loadSolution () {
             var content, parts, target;
             switch(RUR.state.input_method) {
                 case "python":
+                case "coffeescript":
+                case "cpp":
                 case "javascript":
                     target = editor;
                     break;
@@ -134,6 +150,9 @@ $(document).ready(function() {
     });
     $("#save-solution-btn").on("click", function (evt) {
         saveSolution();
+    });
+    $("#new-solution-btn").on("click", function (evt) {
+        newSolution();
     });
 });
 
