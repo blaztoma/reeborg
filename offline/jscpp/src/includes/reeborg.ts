@@ -23,9 +23,21 @@ export = {
             }
         })();
 
+        // const registerFunction = function(methodName: string, callback: (...args: any) => any) {
+        //     rt.regFunc(function(rt: CRuntime, _this: any, ...args: Variable[]) {
+        //         return rt.val(rt.boolTypeLiteral, (callback(...argumentTranslation(args)) ?? 1) > 0);
+        //     }, "global", methodName, ["?"], rt.boolTypeLiteral);
+        // };
+
         const registerFunction = function(methodName: string, callback: (...args: any) => any) {
-            rt.regFunc(function(rt: CRuntime, _this: any, ...args: Variable[]) {     
-                return rt.val(rt.boolTypeLiteral, (callback(...argumentTranslation(args)) ?? 1) > 0);
+            rt.regFunc(function(rt: CRuntime, _this: any, ...args: Variable[]) {
+                const result = callback(...argumentTranslation(args));
+                const isValid = Array.isArray(result)
+                    ? result.length > 0
+                    : result && typeof result === 'object'
+                        ? Object.keys(result).some(key => result[key] > 0)
+                        : (result ?? 1) > 0;
+                return rt.val(rt.boolTypeLiteral, isValid);
             }, "global", methodName, ["?"], rt.boolTypeLiteral);
         };
 

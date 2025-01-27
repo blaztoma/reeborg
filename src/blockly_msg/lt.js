@@ -309,10 +309,10 @@ function blockly_init_lt () {
     Blockly.Msg["PROCEDURES_DEFNORETURN_DO"] = "";
     Blockly.Msg["PROCEDURES_DEFNORETURN_HELPURL"] = "https://en.wikipedia.org/wiki/Subroutine";
     Blockly.Msg["PROCEDURES_DEFNORETURN_PROCEDURE"] = "daryti kažką";
-    Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"] = "kad";
+    Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"] = "funkcija";
     Blockly.Msg["PROCEDURES_DEFNORETURN_TOOLTIP"] = "Sukuria funkciją, kuri negrąžina rezultato.";
     Blockly.Msg["PROCEDURES_DEFRETURN_HELPURL"] = "https://en.wikipedia.org/wiki/Subroutine";
-    Blockly.Msg["PROCEDURES_DEFRETURN_RETURN"] = "grįžti";
+    Blockly.Msg["PROCEDURES_DEFRETURN_RETURN"] = "grąžinti";
     Blockly.Msg["PROCEDURES_DEFRETURN_TOOLTIP"] = "Sukuria funkciją su rezultatu.";
     Blockly.Msg["PROCEDURES_DEF_DUPLICATE_WARNING"] = "Įspėjimas: Ši funkcija turi pasikartojančius parametrus.";
     Blockly.Msg["PROCEDURES_HIGHLIGHT_DEF"] = "Išryškinti funkcijos apibrėžimą";
