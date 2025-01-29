@@ -54,6 +54,7 @@ header {
     left: 0;
     width: 100%;
     min-width: 800px;
+    z-index: 200;
 }
 
 header form {
@@ -150,15 +151,17 @@ nav a:first-child {
 button {
     font-weight: bold;
     position: relative;
-    height: 37px;
+    height: 40px;
+    whidth: 40px;
     margin: 0;
     background-color: #124;
+    vertical-align: top;
 }
 
 
 a.left-link, a.right-link, button, a.fake-button {
     font-size: 12pt;
-    padding: 5px;
+    padding: 10px;
     text-decoration: none;
     color: white !important;
     border-top: 0;
@@ -249,7 +252,7 @@ input.blue-gradient {
   font-size: 12pt;
     font-weight: bold;
     position: relative;
-    height: 37px;
+    height: 40px;
     margin: 0;
     background-color: #124;
     color: white;
@@ -585,7 +588,7 @@ li.failure:after, p.failure:after {
 
 #canvas-wrapper {
     position: absolute;
-    top: 42px;
+    top: 45px;
 }
 #image-choice-buttons,  /* old */
 #image-choice-buttons-small {
@@ -653,6 +656,7 @@ li.failure:after, p.failure:after {
     left: 640px;
     padding: 0;
     height: 600px;
+    z-index: 150;
 }
 
 #blocklyDiv {
@@ -986,4 +990,16 @@ p#thought {
 p#thought img {
     position: relative;
     top: 20px;
+}
+
+.blue-gradient span svg {
+    width: 18px;
+    height: 18px;
+}
+
+.icon {
+    fill: currentColor;
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
 }

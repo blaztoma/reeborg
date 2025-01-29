@@ -65,8 +65,8 @@ function blockly_init_lt () {
     Blockly.Msg["CONTROLS_REPEAT_TITLE"] = "kartoti %1 kartus";
     Blockly.Msg["CONTROLS_REPEAT_TOOLTIP"] = "Atlikti kai kuriuos veiksmus kelis kartus.";
     Blockly.Msg["CONTROLS_WHILEUNTIL_HELPURL"] = "https://github.com/google/blockly/wiki/Loops#repeat";
-    Blockly.Msg["CONTROLS_WHILEUNTIL_OPERATOR_UNTIL"] = "kartoti kol";
-    Blockly.Msg["CONTROLS_WHILEUNTIL_OPERATOR_WHILE"] = "kartoti kol yra";
+    Blockly.Msg["CONTROLS_WHILEUNTIL_OPERATOR_UNTIL"] = "kartoti iki";
+    Blockly.Msg["CONTROLS_WHILEUNTIL_OPERATOR_WHILE"] = "kartoti kol";
     Blockly.Msg["CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL"] = "Kol reikšmė neteisinga, atlikti kai kuriuos veiksmus.";
     Blockly.Msg["CONTROLS_WHILEUNTIL_TOOLTIP_WHILE"] = "Kol reikšmė teisinga, atlikti kai kuriuos veiksmus.";
     Blockly.Msg["DELETE_ALL_BLOCKS"] = "Ištrinti visus %1 blokus?";
