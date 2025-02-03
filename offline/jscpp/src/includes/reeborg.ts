@@ -6,6 +6,9 @@ export = {
         
         const argumentTranslation = (function() {
             const translationLayer: Record<string, (arg: Variable) => any> = {
+                "{!(wchar_t)}": function(arg: ArrayVariable) {
+                    return rt.getStringFromCharArray(arg);
+                },
                 "{!(char)}": function(arg: ArrayVariable) {
                     return rt.getStringFromCharArray(arg);
                 },
