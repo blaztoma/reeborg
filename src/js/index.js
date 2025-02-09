@@ -74,7 +74,7 @@ function start_session () {
 
 
 function confirm_ready_to_start() {
-    if (window.translate_python === undefined || !RUR.state.ui_ready) {
+    if (window.translate_python === undefined || !RUR.state.ui_ready || !window.SCORM_checkup_finished) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
         window.setTimeout(confirm_ready_to_start, 100);
     } else {
@@ -257,25 +257,54 @@ function restore_blockly () {
 
 function _restore_blockly () {
     var xml, xml_text;
-    xml_text = localStorage.getItem("blockly");
-    if (xml_text) {
+
+    xml_text = "";
+    xml_text = getCodeFromScorm();
+    if (xml_text.length > 0) {
+        xml = Blockly.Xml.textToDom(xml_text);
+        Blockly.Xml.domToWorkspace(xml, RUR.blockly.workspace);
+    } else if (localStorage.getItem("blockly") && !window.SCORM_use_scorm) {
         xml = Blockly.Xml.textToDom(xml_text);
         Blockly.Xml.domToWorkspace(xml, RUR.blockly.workspace);
     }
 }
 
-
-function set_editor() {
-    "use strict";
-    if (localStorage.getItem("editor")){
-        editor.setValue(localStorage.getItem("editor"));
+function set_initial_code() {
+    if (RUR.state.input_method == "cpp") {
+        editor.setValue("#include <reeborg>\n" +
+            "\n" +
+            "int main() {\n" +
+            "\n" +
+            "    return 0;\n" +
+            "}");
     } else {
         editor.setValue(RUR.translate("move") + "()");
     }
 }
 
+function set_editor() {
+    "use strict";
+    let code = "";
+    code = getCodeFromScorm();
+    if (code.length > 0) {
+        const parts = code.split(RUR.library_separator());
+        editor.setValue(parts[0]);
+    } else if (localStorage.getItem("editor") && !window.SCORM_use_scorm) {
+        editor.setValue(localStorage.getItem("editor"));
+    } else {
+        set_initial_code();
+    }
+}
+
 function set_library() {
-    if (localStorage.getItem("library")){
+    let code = "";
+    code = getCodeFromScorm();
+    if (code.length > 0) {
+        const parts = code.split(RUR.library_separator());
+        if (parts.length === 2) {
+            library.setValue(parts[1]);
+        }
+    } else if (localStorage.getItem("library") && !window.SCORM_use_scorm){
         library.setValue(localStorage.getItem("library"));
     }
 }

@@ -17,10 +17,10 @@
     }
   },
   "description": [
-    "<h1>I want to go home!</h1>",
-    "Write a program that makes Reeborg go home.",
-    "<h3>What you need to know</h3>",
-    "The function <code>move()</code>.",
+    "<h1>Noriu namo!</h1>",
+    "Parašyk programą, kuri parvestų Robotuką namo.",
+    "<h3>Ką reikia žinoti</h3>",
+    "Funkciją <code>pirmyn()</code>.",
     "DIFFICULTY1"
   ],
   "onload": "RUR.state.visible_grid = true;",

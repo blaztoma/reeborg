@@ -31,7 +31,7 @@ RUR.runner.run = function (playback) {
         RUR.set_current_world(RUR.clone_world(RUR.WORLD_AFTER_ONLOAD));
         RUR.world_init();
 
-        if (!(({"python": true, "javascript": true, "cpp": true})[RUR.state.programming_language] && RUR.state.highlight) ) {
+        if (!(({"python": true, "javascript": true, "coffeescript": true, "cpp": true})[RUR.state.programming_language] && RUR.state.highlight) ) {
             RUR.record_frame();  // record the starting state as first frame;
             // for python with highlighting on, the first frame will be the first
             // instruction to be executed highlighted.
@@ -82,6 +82,9 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
        guard against any future changes by doing our own handling. */
 
     RUR.__python_error = false;
+    RUR.__cpp_error = false;
+    RUR.__reeborg_failure = false;
+    RUR.__reeborg_success = false;
     try {
         if (RUR.state.programming_language === "javascript") {
             RUR.runner.eval_javascript(src);
@@ -96,39 +99,52 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
         } else if (RUR.state.programming_language === "cpp") {
             RUR.runner.eval_cpp(src);
         } else {
-            alert("FATAL ERROR: Unrecognized programming language.");
+            alert("FATAL ERROR: Unrecognized programming language. " + RUR.state.programming_language);
             return true;
         }
     } catch (e) {
+        console.log("error caught");
+        console.log(e);
+
         RUR.state.code_evaluated = true;
         if (RUR.__debug){
             console.dir(e);
+            console.log(RUR.frames);
         }
         error = {};
-        if (e.reeborg_concludes !== undefined) {  // indicates success
-            error.message = e.reeborg_concludes;
+        if (e.reeborg_success) {
+            error.reeborg_success = e.reeborg_success;
+        } else if (RUR.__reeborg_success) {
+            error.reeborg_success = RUR.__reeborg_success;
+        }
+
+        if (e.reeborg_failure) {
+            error.reeborg_failure = e.reeborg_failure;
+        } else if (RUR.__reeborg_failure) {
+            error.reeborg_failure = RUR.__reeborg_failure;
+        }
+
+        if (error.reeborg_success) {
             error.name = "ReeborgOK";
             if (RUR.state.prevent_playback) {
-                RUR.show_feedback("#Reeborg-concludes", e.reeborg_concludes);
+                RUR.show_feedback("#Reeborg-success", error.reeborg_success);
             } else {
                 RUR.record_frame("error", error);
             }
             return false; // since success, not a fatal error.
         }
+
         if (RUR.state.programming_language === "python") {
-            error.reeborg_shouts = e.reeborg_shouts;
             response = RUR.runner.simplify_python_traceback(e);
             message = response.message;
             other_info = response.other_info;
             error.name = response.error_name;
             let translated_error;
-            translated_error = error.name;
-            // if (error.name === "ReeborgError")
             translated_error = RUR.translate(message);
             error.message = "<h3>" + error.name + "</h3><p>" +
                 translated_error + "</p><p>" + other_info + '</p>';
             if (RUR.state.prevent_playback) {
-                RUR.show_feedback("#Reeborg-concludes", e.reeborg_concludes);
+                RUR.show_feedback("#Reeborg-success", e.reeborg_success);
             } else {
                 RUR.record_frame("error", error);
             }
@@ -140,19 +156,18 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
             error.name = e.name;
             message = e.message;
             other_info = '';
-            if (e.reeborg_shouts !== undefined) {
-                error.message = e.reeborg_shouts;
-                error.reeborg_shouts = e.reeborg_shouts;
+            if (e.reeborg_failure !== undefined) {
+                error.message = e.reeborg_failure;
+                error.reeborg_failure = e.reeborg_failure;
             }
         }
 
-        if (e.reeborg_shouts !== undefined){
+        if (error.reeborg_failure !== undefined){
             RUR.record_frame("error", error);
         } else {
-            RUR.show_feedback("#Reeborg-shouts",
-                                    "<h3>" + error.name + "</h3><p>" +
-                                    RUR.translate(message) + "</p><p>" + other_info + '</p>');
-                                    // RUR.translate(message) + "</p><p>" + other_info + '</p>' + RUR.add_ai_button(error));
+            RUR.record_frame("error", {message:"<h3>" + error.name + "</h3><p>" +
+                    message + "</p><p>" + other_info + '</p>'});
+            $("#Reeborg-success").dialog("close");
             return true;
         }
     }
@@ -308,7 +323,7 @@ RUR.runner.eval_javascript = function (src) {
 
                 if (OK) {
                     RUR.set_lineno_highlight([lineno]);
-                }                
+                }
 
                 return OK;
             },
@@ -326,7 +341,7 @@ RUR.runner.eval_javascript = function (src) {
             }
         };
     })();
-
+/*
     try {
         const interp = JSInterpreter.eval(src);
         interp[RUR.state.highlight ? "highlightRun" : "run"]()
@@ -336,7 +351,22 @@ RUR.runner.eval_javascript = function (src) {
             interp[RUR.state.highlight ? "highlightRun" : "run"]()
         }
         throw e;// throw original message from Done if nothing else is raised
-    } 
+    }
+*/
+    try {
+        const interp = JSInterpreter.eval(src);
+        interp[RUR.state.highlight ? "highlightRun" : "run"]()
+    } catch (error) {
+        if (RUR.state.done_executed){
+            const interp = JSInterpreter.eval(post_code);
+            interp[RUR.state.highlight ? "highlightRun" : "run"]()
+        }
+        RUR.record_frame("error", error);
+        throw error;
+    }
+    if (RUR.state.done_executed){
+        throw new RUR.ReeborgError(RUR.translate("Done!"));
+    }
 };
 
 RUR.runner.eval_coffeescript = function (src) {
@@ -384,7 +414,16 @@ RUR.runner.eval_cpp = function (src) {
                 eval(post_code);
             },
             promiseError: function(promise_error) {
-                RUR.show_feedback("#Reeborg-shouts", promise_error);
+                try{ // highlight problematic line if a Syntax Error occurs
+                    var lineno = promise_error.split(":")[0];
+                    if (parseInt(lineno)) {
+                        RUR.set_lineno_highlight([lineno - 1]);
+                    }
+                } catch(e){}
+                if (!RUR.state.done_executed){
+                    RUR.__reeborg_failure = true;
+                    RUR.record_frame("error", {message:promise_error});
+                }
             },
             write: function(s) {
                 console.log(`JSCPP: ${s}`);
@@ -402,16 +441,20 @@ RUR.runner.eval_cpp = function (src) {
         eventLoopSteps: 10_000,
         unsigned_overflow: "error"
     };
-    
+
     try {
         // stopExecutionFlag = false;
         JSCPP.run(src, () => Promise.resolve(), config);
+        eval(post_code);
     } catch (error) {
-        errorOccured = true;
         if (RUR.state.done_executed){
-            JSCPP.run(post_code, () => Promise.resolve(), config);
+            eval(post_code);
         }
-        throw error; // throw original message from Done if nothing else is raised
+        RUR.record_frame("error", error);
+        throw error;
+    }
+    if (RUR.state.done_executed){
+        throw new RUR.ReeborgError(RUR.translate("Done!"));
     }
 };
 

@@ -159,7 +159,7 @@ with highlihting turned off, during playback, the content of RUR.rec_line_number
 will be ignored no matter what its content is.
 */
 
-    if (({ "python": true, "javascript": true, "cpp": true})[RUR.state.programming_language] && RUR.state.highlight) {
+    if (({ "python": true, "javascript": true, "coffeescript": true, "cpp": true })[RUR.state.programming_language] && RUR.state.highlight) {
         if (RUR.current_line_no === undefined) {
             RUR.current_line_no = [0];
         }

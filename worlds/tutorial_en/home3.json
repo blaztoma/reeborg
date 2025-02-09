@@ -10,10 +10,10 @@
   "rows": 3,
   "cols": 3,
   "description": [
-    "<h1>I want to go home!</h1>",
-    "Write a program that makes Reeborg go home.",
-    "<h3>What you need to know</h3>",
-    "The functions <code>move()</code> and <code>turn_left()</code>.",
+    "<h1>Namai už kampo!</h1>",
+    "Parašyk programą, kuri parvestų Robotuką namo.",
+    "<h3>Ką reikia žinoti</h3>",
+    "Funkcijas <code>pirmyn()</code> ir <code>suktis_kairėn()</code>.",
     "DIFFICULTY1"
   ],
   "onload": "RUR.state.visible_grid = true;",
