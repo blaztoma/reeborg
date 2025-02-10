@@ -1,5 +1,5 @@
 import _ = require("lodash");
-import { CCharType, CFloatType, CIntType, JSCPPConfig, Variable, OpHandlerMap, ArrayElementVariable } from "./rt";
+import { CCharType, CFloatType, CIntType, JSCPPConfig, Variable, ArrayVariable, OpHandlerMap, ArrayElementVariable } from "./rt";
 
 const config: JSCPPConfig = {
     specifiers: ["const", "inline", "_stdcall", "extern", "static", "auto", "register"],
@@ -572,13 +572,14 @@ types["pointer"] = {
                 if (rt.isPointerType(l) && rt.isPointerType(r)) {
                     if (rt.isTypeEqualTo(l.t, r.t)) {
                         if (rt.isArrayType(l) && rt.isArrayType(r)) {
-                            ret = (l.v.target === r.v.target) && ((l.v.target === null) || (l.v.position === r.v.position));
+                            ret = (l.v.target === r.v.target || _.isEqual(l.v.target, r.v.target)) && ((l.v.target === null) || (l.v.position === r.v.position));
                         } else {
                             ret = l.v.target === r.v.target;
                         }
                     }
-                    const rett = rt.boolTypeLiteral;
-                    return rt.val(rett, ret);
+                    return rt.val(rt.boolTypeLiteral, ret);
+                } else if (rt.isPointerType(l) && rt.isStringType(r as Variable)) {
+                    return rt.types[rt.getTypeSignature(r.t)].handlers["o(==)"].default(rt, l, r);
                 } else {
                     rt.raiseException(rt.makeTypeString(l.t) + " does not support == on " + rt.makeTypeString(r.t));
                 }

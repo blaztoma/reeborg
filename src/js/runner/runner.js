@@ -112,26 +112,9 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
             console.log(RUR.frames);
         }
         error = {};
-        if (e.reeborg_success) {
-            error.reeborg_success = e.reeborg_success;
-        } else if (RUR.__reeborg_success) {
-            error.reeborg_success = RUR.__reeborg_success;
-        }
 
-        if (e.reeborg_failure) {
-            error.reeborg_failure = e.reeborg_failure;
-        } else if (RUR.__reeborg_failure) {
+        if (RUR.__reeborg_failure) {
             error.reeborg_failure = RUR.__reeborg_failure;
-        }
-
-        if (error.reeborg_success) {
-            error.name = "ReeborgOK";
-            if (RUR.state.prevent_playback) {
-                RUR.show_feedback("#Reeborg-success", error.reeborg_success);
-            } else {
-                RUR.record_frame("error", error);
-            }
-            return false; // since success, not a fatal error.
         }
 
         if (RUR.state.programming_language === "python") {
@@ -156,10 +139,7 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
             error.name = e.name;
             message = e.message;
             other_info = '';
-            if (e.reeborg_failure !== undefined) {
-                error.message = e.reeborg_failure;
-                error.reeborg_failure = e.reeborg_failure;
-            }
+            error.reeborg_failure = e.message;
         }
 
         if (error.reeborg_failure !== undefined){
@@ -312,14 +292,15 @@ RUR.runner.eval_javascript = function (src) {
                 let stepAgain = !isLine(stack);
                 try {
                     OK = interp.step();
+                } catch (exception) {
+                    RUR.set_lineno_highlight([lineno + 1]);
+                    if (!RUR.state.done_executed) {
+                        RUR.__reeborg_failure = true;
+                        RUR.record_frame("error", { message: exception.message });
+                    }
                 } finally {
                     if (!OK) {
                         stepAgain = false;
-                        RUR.set_lineno_highlight([lineno + 1]);
-                        if (!RUR.state.done_executed){
-                            RUR.__reeborg_failure = true;
-                            RUR.record_frame("error", {message: "Klaida!"});
-                        }
                     }
                 }
 

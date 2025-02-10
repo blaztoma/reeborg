@@ -74,7 +74,7 @@ function start_session () {
 
 
 function confirm_ready_to_start() {
-    if (window.translate_python === undefined || !RUR.state.ui_ready || !window.SCORM_checkup_finished) {
+    if (window.translate_python === undefined || !RUR.state.ui_ready || false && !window.SCORM_checkup_finished) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
         window.setTimeout(confirm_ready_to_start, 100);
     } else {
@@ -259,7 +259,7 @@ function _restore_blockly () {
     var xml, xml_text;
 
     xml_text = "";
-    xml_text = getCodeFromScorm();
+    xml_text = window.getCodeFromScorm?.() ?? xml_text;
     if (xml_text.length > 0) {
         xml = Blockly.Xml.textToDom(xml_text);
         Blockly.Xml.domToWorkspace(xml, RUR.blockly.workspace);
@@ -285,7 +285,7 @@ function set_initial_code() {
 function set_editor() {
     "use strict";
     let code = "";
-    code = getCodeFromScorm();
+    code = window.getCodeFromScorm?.() ?? code;
     if (code.length > 0) {
         const parts = code.split(RUR.library_separator());
         editor.setValue(parts[0]);
@@ -298,7 +298,7 @@ function set_editor() {
 
 function set_library() {
     let code = "";
-    code = getCodeFromScorm();
+    code = window.getCodeFromScorm?.() ?? code;
     if (code.length > 0) {
         const parts = code.split(RUR.library_separator());
         if (parts.length === 2) {
