@@ -101,6 +101,15 @@ RUR._object_here_ = function (arg) {
     return obj;
 };
 
+RUR.objects_here = function (arg) {
+    obj = RUR.world_get.object_at_robot_position(RUR.get_current_world().robots[0], arg);
+    return obj.length > 0;
+};
+
+RUR.get_objects = function() {
+    return RUR.world_get.object_at_robot_position(RUR.get_current_world().robots[0], undefined);
+};
+
 RUR._paint_square_ = function (color) {
     // note that this can do more than simply setting the color: it can also
     // set the tile type.

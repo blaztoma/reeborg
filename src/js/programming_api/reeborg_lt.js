@@ -111,7 +111,6 @@ RUR.reset_definitions_lt = function () {
         RUR._UR.take_(this.body);
     };
 
-
     NaudojamasRobotas.prototype.suktis_kairėn = function () {
         RUR._UR.turn_left_(this.body);
     };
@@ -145,6 +144,8 @@ RUR.reset_definitions_lt = function () {
         pirmyn: RUR._move_,
         new_robot_images: RUR._new_robot_images_,
         aptiktas_objektas: RUR._object_here_,
+        aptikti_objektai: RUR.objects_here,
+        suzinoti_objektus: RUR.get_objects, 
         pauzė: RUR._pause_,
         paint_square: RUR._paint_square_,
         position_here: function() {
@@ -155,8 +156,8 @@ RUR.reset_definitions_lt = function () {
             var pos, body = RUR._default_robot_body_();
             pos = RUR.get_position_in_front(body);
             if (RUR.is_valid_position(pos["x"], pos["y"])) {
-                return [pos["x"], pos["y"]];}
-            else {
+                return [pos["x"], pos["y"]];
+            } else {
                 return undefined;
             }
         },
