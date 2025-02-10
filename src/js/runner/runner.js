@@ -318,7 +318,7 @@ RUR.runner.eval_javascript = function (src) {
                         RUR.set_lineno_highlight([lineno + 1]);
                         if (!RUR.state.done_executed){
                             RUR.__reeborg_failure = true;
-                            RUR.record_frame("error", {message:"Klaida!"});
+                            RUR.record_frame("error", {message: "Klaida!"});
                         }
                     }
                 }
