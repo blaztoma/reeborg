@@ -315,6 +315,11 @@ RUR.runner.eval_javascript = function (src) {
                 } finally {
                     if (!OK) {
                         stepAgain = false;
+                        RUR.set_lineno_highlight([lineno + 1]);
+                        if (!RUR.state.done_executed){
+                            RUR.__reeborg_failure = true;
+                            RUR.record_frame("error", {message:"Klaida!"});
+                        }
                     }
                 }
 
@@ -381,6 +386,10 @@ RUR.runner.eval_coffeescript = function (src) {
     } catch (e) {
         if (RUR.state.done_executed){
             eval(post_code); // jshint ignore:line
+        }
+        if (!RUR.state.done_executed){
+            RUR.__reeborg_failure = true;
+            RUR.record_frame("error", {message:e.message});
         }
         throw e;// throw original message from Done if nothing else is raised
     }

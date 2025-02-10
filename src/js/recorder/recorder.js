@@ -168,6 +168,7 @@ RUR.rec.conclude = function () {
             }
         }
     }
+    saveCode();
     RUR.stop();
     return "stopped";
 };
@@ -200,6 +201,7 @@ RUR.rec.handle_error = function (frame) {
         }
         RUR.show_feedback("#Reeborg-shouts", frame.error.message);
     }
+    saveCode();
     RUR.stop();
     return "stopped";
 };
