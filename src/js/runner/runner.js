@@ -64,8 +64,9 @@ RUR.runner.run = function (playback) {
         if (RUR.state.prevent_playback) {
             return;
         }
-        playback();
     }
+    
+    playback();
 };
 
 /* RUR.runner.eval returns true if a fatal error is found, false otherwise */
@@ -145,8 +146,7 @@ RUR.runner.eval = function(src) {  // jshint ignore:line
         if (error.reeborg_failure !== undefined){
             RUR.record_frame("error", error);
         } else {
-            RUR.record_frame("error", {message:"<h3>" + error.name + "</h3><p>" +
-                    message + "</p><p>" + other_info + '</p>'});
+            RUR.record_frame("error", {message:"<h3>" + error.name + "</h3><p>" + message + "</p><p>" + other_info + '</p>'});
             $("#Reeborg-success").dialog("close");
             return true;
         }
