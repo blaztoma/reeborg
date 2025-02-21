@@ -15,16 +15,10 @@
   },
   "author": "Felix Hao <felixhao28@gmail.com>",
   "maintainers": [
-    {
-      "name": "Felix Hao",
-      "email": "felixhao28@gmail.com"
-    }
+    "Felix Hao <felixhao28@gmail.com>"
   ],
   "contributors": [
-    {
-      "name": "Felix Hao",
-      "email": "felixhao28@gmail.com"
-    }
+    "Felix Hao <felixhao28@gmail.com>"
   ],
   "scripts": {
     "build": "grunt build",
