@@ -1180,7 +1180,7 @@ export class Interpreter extends BaseInterpreter {
         };
     }
 
-    *visit(interp: Interpreter, s: any, param?: any) {
+    *visit(interp: Interpreter, s: any, param?: any): Generator<any, any, unknown> {
         let ret;
         const {
             rt

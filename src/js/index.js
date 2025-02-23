@@ -74,7 +74,9 @@ function start_session () {
 
 
 function confirm_ready_to_start() {
-    if (window.translate_python === undefined || !RUR.state.ui_ready || false && !window.SCORM_checkup_finished) {
+    if ( window.translate_python === undefined ||
+        !RUR.state.ui_ready ||
+        ("SCORM_checkup_finished" in window && !window.SCORM_checkup_finished)) {
         console.log("Not quite ready to initialize session; will try again in 100ms.");
         window.setTimeout(confirm_ready_to_start, 100);
     } else {
@@ -270,7 +272,7 @@ function _restore_blockly () {
 }
 
 function set_initial_code() {
-    if (RUR.state.input_method == "cpp") {
+    if (RUR.state.input_method === "cpp") {
         editor.setValue("#include <reeborg>\n" +
             "\n" +
             "int main() {\n" +

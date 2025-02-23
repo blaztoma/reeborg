@@ -347,13 +347,13 @@
     ""
   ],
   "pre": [
-    "set_trace_style(\"invisible\")"
   ],
   "onload": [
     "RUR.add_pushable('box',5,5)",
     "RUR.add_pushable('box',4,4)",
     "RUR.add_pushable('box',7,4,{goal: true})",
-    "RUR.add_pushable('box',6,4,{goal: true})"
+    "RUR.add_pushable('box',6,4,{goal: true})",
+    "RUR.control.set_trace_style(RUR.get_current_world().robots[0], \"invisible\")"
   ],
   "decorative_objects": {
     "7,6": [

@@ -272,7 +272,8 @@
     "RUR.add_pushable('box',5,4,{goal: true})",
     "RUR.add_pushable('box',7,3,{goal: true})",
     "RUR.add_pushable('box',4,3,{goal: true})",
-    "RUR.add_pushable('box',5,2,{goal: true})"
+    "RUR.add_pushable('box',5,2,{goal: true})",
+    "RUR.control.set_trace_style(RUR.get_current_world().robots[0], \"invisible\")"
   ],
   "editor": [
     "from sokoban import *",
@@ -283,6 +284,5 @@
     ""
   ],
   "pre": [
-    "set_trace_style(\"invisible\")"
   ]
 }

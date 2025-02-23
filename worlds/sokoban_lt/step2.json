@@ -512,9 +512,9 @@
   "onload": [
     "RUR.add_pushable('box',4,5)",
     "RUR.add_pushable('box',10,5)",
-    "RUR.add_pushable('box',3,8,{goal: true})"
+    "RUR.add_pushable('box',3,8,{goal: true})",
+    "RUR.control.set_trace_style(RUR.get_current_world().robots[0], \"invisible\")"
   ],
   "pre": [
-    "set_trace_style(\"invisible\")"
   ]
 }
