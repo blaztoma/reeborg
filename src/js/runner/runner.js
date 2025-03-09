@@ -234,7 +234,8 @@ RUR.runner.eval_javascript = function (src) {
     pre_code = pre_code_editor.getValue();
     post_code = post_code_editor.getValue();
     const definitions = RUR.reset_definitions();
-    src = pre_code + "\n" + src + "\n" + post_code;
+    eval(pre_code);
+    src = src + "\n" + post_code;
 
     const JSInterpreter = (function() {
         let interp = null;
